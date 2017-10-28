@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Helinskier</title>
+  <link rel="stylesheet" href="jquery-ui/jquery-ui.css">
+  <script src="jquery-ui/external/jquery/jquery.js"></script>
+  <script src="jquery-ui/jquery-ui.js"></script>
+
+  <style>
+    @font-face {
+      font-family: 'Yanone Kaffeesatz';
+      src: url('Fonts/YanoneKaffeesatz-Regular.ttf');
+    }
+
+    #main-tool-bar {
+      width: inherit;
+      height: 40px;
+      margin: 0 auto;
+      background-color: #DBF0F4;
+      border-radius: 2%;
+      padding: 4px;
+    }
+
+    #main-tool-bar h1 {
+      font-family: 'Yanone Kaffeesatz', sans-serif;
+      margin: 5px;
+      float: left;
+    }
+
+    #button-holder {
+      margin: 5px auto;
+      width: 255px;
+      height: 30px;
+    }
+
+    .toggle-button {
+      background-color: white;
+      float: left;
+      padding-top: 5px;
+      border: 1px solid gray;
+      border-radius: 4px;
+      font-size: 25px;
+      font-family: 'Yanone Kaffeesatz', sans-serif;
+      transition-duration: 0.4s;
+    }
+
+    .toggle-button:hover {
+      background-color: #E4E4E4;
+      cursor: pointer;
+    }
+
+    #main-display {
+      padding: 4px;
+      width: inherit;
+      height: 506px;
+      margin: 0 auto;
+      background-color: #F8FCDA;
+      border-radius: 1%;
+    }
+
+    .display {
+      width: 24.8%;
+      height: 500px;
+      border: 1px solid #F0EDE8;
+      float: left;
+      background-color: #FCC87F;
+    }
+
+    #left-background {
+      width: 20%;
+      height: 500px;
+      float: left;
+      background-color: yellow;
+    }
+
+    #right-background {
+      width: 20%;
+      height: 500px;
+      float: right;
+      background-color: yellow;
+    }
+  </style>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $("#html").click(function() {
+        $("#html-display").toggle();
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="main-tool-bar">
+    <h1>Helinskier</h1>
+    <div id="button-holder">
+      <button class="toggle-button" type="button" id="html">HTML</button>
+      <button class="toggle-button" type="button" id="css">CSS</button>
+      <button class="toggle-button" type="button" id="javascript">Javascript</button>
+      <button class="toggle-button" type="button" id="output">Output</button>
+    </div>
+  </div>
+  <div id="main-display">
+    <div class="display" id="html-display"></div>
+    <div class="display" id="css-display"></div>
+    <div class="display" id="javascript-display"></div>
+    <div class="display" id="output-display"></div>
+  </div>
+</body>
+</html>
