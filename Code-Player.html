@@ -8,12 +8,19 @@
   <script src="jquery-ui/jquery-ui.js"></script>
 
   <style>
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: hidden;
+    }
+
     @font-face {
       font-family: 'Yanone Kaffeesatz';
       src: url('Fonts/YanoneKaffeesatz-Regular.ttf');
     }
 
-    #main-tool-bar {
+    #main-toolbar {
       width: inherit;
       height: 40px;
       margin: 0 auto;
@@ -22,13 +29,13 @@
       padding: 4px;
     }
 
-    #main-tool-bar h1 {
+    #main-toolbar h1 {
       font-family: 'Yanone Kaffeesatz', sans-serif;
       margin: 5px;
       float: left;
     }
 
-    #button-holder {
+    #button-container {
       margin: 5px auto;
       width: 255px;
       height: 30px;
@@ -43,6 +50,7 @@
       font-size: 25px;
       font-family: 'Yanone Kaffeesatz', sans-serif;
       transition-duration: 0.4s;
+      outline: none;
     }
 
     .toggle-button:hover {
@@ -51,60 +59,78 @@
     }
 
     #main-display {
+      padding-top: 0px !important;
       padding: 4px;
       width: inherit;
-      height: 506px;
       margin: 0 auto;
-      background-color: #F8FCDA;
+      /*background-color: #F8FCDA;*/
       border-radius: 1%;
     }
 
-    .display {
-      width: 24.8%;
-      height: 500px;
-      border: 1px solid #F0EDE8;
-      float: left;
-      background-color: #FCC87F;
+    .active {
+      background-color: #E8F2FF;
     }
 
-    #left-background {
-      width: 20%;
-      height: 500px;
-      float: left;
-      background-color: yellow;
+    textarea {
+      resize: none;
+      border-top: none;
+      border-left: none;
+      border-bottom: none;
+      border-color: grey;
     }
 
-    #right-background {
-      width: 20%;
-      height: 500px;
-      float: right;
-      background-color: yellow;
+    .panel {
+      float: left;
+      width: 50%;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    iframe {
+      border: none;
+      background-color: white;
     }
   </style>
 
   <script type="text/javascript">
     $(document).ready(function() {
-      $("#html").click(function() {
-        $("#html-display").toggle();
+      $(".panel").height($(window).height() - $("#main-toolbar").height() - 30);
+      $("#main-display").height($(".panel").height());
+      $(".panel").width(($(window).width() / 2) - 5);
+      $(".toggle-button").click(function() {
+        $(this).toggleClass("active");
+
+        var panelId = $(this).attr("id") + "-panel";
+        $("#" + panelId).toggleClass("hidden");
+
+        var activePanels = 4 - $('.hidden').length;
+        $(".panel").width(($(window).width() / activePanels) - 5);
       });
+
+      $("iframe").contents().find("html").html($("#html-panel").val());
+      $("textarea").on('change keyup paste', function() {
+        $("iframe").contents().find("html").html("<html><head><style type='text/css'>");
+      })
     });
   </script>
 </head>
 <body>
-  <div id="main-tool-bar">
+  <div id="main-toolbar">
     <h1>Helinskier</h1>
-    <div id="button-holder">
-      <button class="toggle-button" type="button" id="html">HTML</button>
+    <div id="button-container">
+      <button class="toggle-button active" type="button" id="html">HTML</button>
       <button class="toggle-button" type="button" id="css">CSS</button>
       <button class="toggle-button" type="button" id="javascript">Javascript</button>
-      <button class="toggle-button" type="button" id="output">Output</button>
+      <button class="toggle-button active" type="button" id="output">Output</button>
     </div>
   </div>
   <div id="main-display">
-    <div class="display" id="html-display"></div>
-    <div class="display" id="css-display"></div>
-    <div class="display" id="javascript-display"></div>
-    <div class="display" id="output-display"></div>
+    <textarea id="html-panel" class="panel">Hello World!</textarea>
+    <textarea id="css-panel" class="panel hidden">p {color: grey;}</textarea>
+    <textarea id="javascript-panel" class="panel hidden">alert("Hello There");</textarea>
+    <iframe id="output-panel" class="panel"></iframe>
   </div>
 </body>
 </html>
