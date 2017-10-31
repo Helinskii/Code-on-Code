@@ -2,47 +2,59 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Helinskier</title>
+  <title>Code-on-Code</title>
   <link rel="stylesheet" href="jquery-ui/jquery-ui.css">
+  <link rel="shortcut icon" href="favicon.ico">
   <script src="jquery-ui/external/jquery/jquery.js"></script>
   <script src="jquery-ui/jquery-ui.js"></script>
 
   <style>
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background-color: #cce0ff;
+    }
+
     @font-face {
       font-family: 'Yanone Kaffeesatz';
       src: url('Fonts/YanoneKaffeesatz-Regular.ttf');
     }
 
-    #main-tool-bar {
-      width: inherit;
-      height: 40px;
+    #main-toolbar {
+      width: 95%;
+      height: 60px;
       margin: 0 auto;
       background-color: #DBF0F4;
       border-radius: 2%;
+      padding-top: 10px !important;
       padding: 4px;
     }
 
-    #main-tool-bar h1 {
+    #main-toolbar h1 {
       font-family: 'Yanone Kaffeesatz', sans-serif;
-      margin: 5px;
+      font-size: 50px;
+      margin: 7px 5px;
       float: left;
     }
 
-    #button-holder {
-      margin: 5px auto;
-      width: 255px;
+    #button-container {
+      margin: 10px auto;
+      width: 520px;
       height: 30px;
     }
 
     .toggle-button {
+      width: 130px;
       background-color: white;
       float: left;
       padding-top: 5px;
       border: 1px solid gray;
       border-radius: 4px;
-      font-size: 25px;
+      font-size: 35px;
       font-family: 'Yanone Kaffeesatz', sans-serif;
       transition-duration: 0.4s;
+      outline: none;
     }
 
     .toggle-button:hover {
@@ -51,60 +63,95 @@
     }
 
     #main-display {
+      padding-top: 0px !important;
       padding: 4px;
-      width: inherit;
-      height: 506px;
+      width: 95%;
       margin: 0 auto;
-      background-color: #F8FCDA;
+      /*background-color: #F8FCDA;*/
       border-radius: 1%;
     }
 
-    .display {
-      width: 24.8%;
-      height: 500px;
-      border: 1px solid #F0EDE8;
-      float: left;
-      background-color: #FCC87F;
+    .active {
+      background-color: #E8F2FF;
     }
 
-    #left-background {
-      width: 20%;
-      height: 500px;
-      float: left;
-      background-color: yellow;
+    textarea {
+      font-size: 20px;
+      resize: none;
+      border-top: none;
+      border-left: none;
+      border-bottom: none;
+      border-color: grey;
+      outline-color: red;
     }
 
-    #right-background {
-      width: 20%;
-      height: 500px;
-      float: right;
-      background-color: yellow;
+    .panel {
+      float: left;
+      width: 50%;
+      border-radius: 1%;
+      background-color: white;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    iframe {
+      border: none;
+      background-color: white;
+      padding-left: 5px;
     }
   </style>
 
   <script type="text/javascript">
     $(document).ready(function() {
-      $("#html").click(function() {
-        $("#html-display").toggle();
+      function updateOutput() {
+        $("iframe").contents().find("html").html("<html><head><style type='text/css'>"
+        + $("#css-panel").val() + "</style></head><body>" + $("#html-panel").val()
+        + "</body></html>");
+        document.getElementById("output-panel").contentWindow.eval($("#javascript-panel").val());
+      };
+
+      $(".panel").height($(window).height() - $("#main-toolbar").height() - 30);
+      $("#main-display").height($(".panel").height());
+      $(".panel").width(($("#main-display").width() / 2) - 5);
+      $(".toggle-button").click(function() {
+        $(this).toggleClass("active");
+
+        var panelId = $(this).attr("id") + "-panel";
+        $("#" + panelId).toggleClass("hidden");
+
+        var activePanels = 4 - $('.hidden').length;
+        $(".panel").width(($("#main-display").width() / activePanels) - 5);
+      });
+
+      updateOutput();
+
+      $("textarea").on('change keyup paste', function() {
+        updateOutput();
       });
     });
   </script>
 </head>
 <body>
-  <div id="main-tool-bar">
-    <h1>Helinskier</h1>
-    <div id="button-holder">
-      <button class="toggle-button" type="button" id="html">HTML</button>
+  <div id="main-toolbar">
+    <h1>Code-on-Code</h1>
+    <div id="button-container">
+      <button class="toggle-button active" type="button" id="html">HTML</button>
       <button class="toggle-button" type="button" id="css">CSS</button>
       <button class="toggle-button" type="button" id="javascript">Javascript</button>
-      <button class="toggle-button" type="button" id="output">Output</button>
+      <button class="toggle-button active" type="button" id="output">Output</button>
     </div>
   </div>
   <div id="main-display">
-    <div class="display" id="html-display"></div>
-    <div class="display" id="css-display"></div>
-    <div class="display" id="javascript-display"></div>
-    <div class="display" id="output-display"></div>
+    <textarea id="html-panel" class="panel" spellcheck="false"><div id="para">Hello World!</div></textarea>
+    <textarea id="css-panel" class="panel hidden" spellcheck="false">#para {
+      color: grey;
+      font-size: 25px;
+      font-family: Courier;
+    }</textarea>
+    <textarea id="javascript-panel" class="panel hidden" spellcheck="false">document.getElementById("para").innerHTML = "Hello There!";</textarea>
+    <iframe id="output-panel" class="panel" spellcheck="false"></iframe>
   </div>
 </body>
 </html>
