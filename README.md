@@ -1,5 +1,4 @@
-Helinskier is a simple and elegant Codeplayer.
-This project was made to implement certain techniques that I learnt, and also
-the jQuery library, which I'm new to.
+# Code-on-Code
+### _An elegant and simple code-player for `HTML`, `CSS` and `Javascript`_<br><br>
 
-- Helinski
+![Code-on-Code](/screenshots/img1.png)
